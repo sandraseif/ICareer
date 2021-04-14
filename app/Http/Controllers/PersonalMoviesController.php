@@ -3,17 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Movie;
+use Auth;
+use Redirect;
 
-class PersonalMovies extends Controller
-{
+class PersonalMoviesController extends Controller
+{   
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('profile.favorite_movies');
+    {   
+        $movies = Movie::orderBy('id', 'DESC')->paginate(10);
+        return view('profile.favorite_movies')->withMovies($movies);
     }
 
     /**
@@ -33,8 +47,24 @@ class PersonalMovies extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+      
+        $data            = $request->all();
+        $data['user_id'] =   Auth::user()->id;
+        $value = $request->session()->get('key');
+
+        $existedMovie = Movie::where('imdb_id',$data['imdb_id'])->first();
+
+        if($existedMovie){
+            $msg = "Movie is already added.";
+        }else{
+            $movie = Movie::create($data);
+            $msg   = "Movie has been added.";
+        }
+   
+        $movies = Movie::orderBy('id', 'DESC')->paginate(10);    
+        return view('profile.favorite_movies')->withMovies($movies)->with('msg',$msg);;
+    
     }
 
     /**

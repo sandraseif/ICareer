@@ -18,4 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/mymovies', 'PersonalMovies@index')->name('myMovies');
+Route::get('/mymovies', 'PersonalMoviesController@index')->name('myMovies');
+Route::post('/movie','PersonalMoviesController@store')->name('addToFavourite');
+Route::post('/imdb','IMDBController@fetch')->name('searchIMDB');

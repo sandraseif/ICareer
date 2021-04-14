@@ -28,7 +28,8 @@ class PersonalMoviesController extends Controller
      */
     public function index(MoviesFilter $filter)
     {   
-        $movies = Movie::filter($filter)->orderBy('id', 'ASC')->paginate(10);
+        $user   = Auth::user()->id;
+        $movies = Movie::filter($filter)->where('user_id',$user)->orderBy('id', 'ASC')->paginate(10);
         //$movies = Movie::orderBy('id', 'DESC')->paginate(10);
         return view('profile.favorite_movies')->withMovies($movies);
     }
@@ -108,7 +109,8 @@ class PersonalMoviesController extends Controller
         $movie->rating = $rating;
         $movie->save();
 
-        $movies = Movie::orderBy('id', 'DESC')->paginate(10);
+        $user   = Auth::user()->id;
+        $movies = Movie::where('user_id',$user)->orderBy('id', 'DESC')->paginate(10);
         return view('profile.favorite_movies')->withMovies($movies);
     }
 

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Filters\MoviesFilter;
 use App\Movie;
 use Auth;
 use Redirect;
+use Session;
 
 class PersonalMoviesController extends Controller
 {   
@@ -24,9 +26,10 @@ class PersonalMoviesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(MoviesFilter $filter)
     {   
-        $movies = Movie::orderBy('id', 'DESC')->paginate(10);
+        $movies = Movie::filter($filter)->orderBy('id', 'ASC')->paginate(10);
+        //$movies = Movie::orderBy('id', 'DESC')->paginate(10);
         return view('profile.favorite_movies')->withMovies($movies);
     }
 
@@ -61,9 +64,11 @@ class PersonalMoviesController extends Controller
             $movie = Movie::create($data);
             $msg   = "Movie has been added.";
         }
-   
-        $movies = Movie::orderBy('id', 'DESC')->paginate(10);    
-        return view('profile.favorite_movies')->withMovies($movies)->with('msg',$msg);;
+        
+        Session::flash('message', $msg);
+        return redirect('/imdbSearch/'.$value);
+        // $movies = Movie::orderBy('id', 'DESC')->paginate(10);    
+        // return view('profile.favorite_movies')->withMovies($movies)->with('msg',$msg);
     
     }
 
@@ -98,7 +103,13 @@ class PersonalMoviesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $movie  =   Movie::findorfail($id);
+        $rating =   $request->all()['rating'];
+        $movie->rating = $rating;
+        $movie->save();
+
+        $movies = Movie::orderBy('id', 'DESC')->paginate(10);
+        return view('profile.favorite_movies')->withMovies($movies);
     }
 
     /**

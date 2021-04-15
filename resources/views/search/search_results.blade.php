@@ -15,6 +15,7 @@
                         <tr>
                             <th>Movie Name</th>                           
                             <th>IMDB ID</th>
+                            <th>Poster</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -23,9 +24,13 @@
                         <tr>
                             <td>{{$movie->Title}}</td>
                             <td>{{$movie->imdbID}}</td>
+                            <td><img src="{{$movie->Poster}}" class="img-responsive img-rounded"
+                   style="max-height: 70px; max-width: 70px;"/></td>
                             <td>
                             <form action="{{ url('movie') }}" method="post">   
                                 <input type="hidden" name="imdb_id" value="{{ $movie->imdbID }}">  
+                                <input type="hidden" name="poster" value="{{ $movie->Poster }}"> 
+                                <input type="hidden" name="type" value="{{ $movie->Type }}">  
                                 <input type="hidden" name="movie_name" value="{{ $movie->Title }}">                         
                                 {{ csrf_field() }}                                
                                 <input type="number" name="rating" placeholder="rating" max=10>

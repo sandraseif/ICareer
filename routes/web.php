@@ -22,4 +22,4 @@ Route::get('/mymovies', 'PersonalMoviesController@index')->name('myMovies');
 Route::post('/movie','PersonalMoviesController@store')->name('addToFavourite');
 Route::post('/movie/{id}','PersonalMoviesController@update')->name('updateRating');
 Route::post('/imdb','IMDBController@fetch')->name('searchIMDB');
-Route::get('/imdbSearch/{movie}','IMDBController@fetch')->name('searchIMDBMovie');
+Route::get('/imdbSearch/{movie}/{type}','IMDBController@fetch')->name('searchIMDBMovie');

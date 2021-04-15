@@ -10,9 +10,28 @@
             <div class="input-group">
                 <form action="{{url('imdb')}}" method="post">
                      @csrf
+                     <input type="hidden" name="type" value="movie"/>
                     <input type="search" class="form-control rounded" placeholder="Search in IMDB" aria-label="Search"
                         aria-describedby="search-addon" name="movieTitle"/>
-                    <button type="submit" class="btn btn-outline-primary">search</button>
+                    <button type="submit" class="btn btn-outline-primary">search movie</button>
+                </form>    
+            </div>
+            <div class="input-group">
+                <form action="{{url('imdb')}}" method="post">
+                     @csrf
+                     <input type="hidden" name="type" value="episode"/>
+                    <input type="search" class="form-control rounded" placeholder="Search in IMDB" aria-label="Search"
+                        aria-describedby="search-addon" name="movieTitle"/>
+                    <button type="submit" class="btn btn-outline-primary">search episode</button>
+                </form>    
+            </div>
+            <div class="input-group">
+                <form action="{{url('imdb')}}" method="post">
+                     @csrf
+                     <input type="hidden" name="type" value="series"/>
+                    <input type="search" class="form-control rounded" placeholder="Search in IMDB" aria-label="Search"
+                        aria-describedby="search-addon" name="movieTitle"/>
+                    <button type="submit" class="btn btn-outline-primary">search series</button>
                 </form>    
             </div>
         </div>        
@@ -42,6 +61,8 @@
                         <tr>
                             <th>Movie Name</th>       
                             <th>IMDB ID</th>
+                            <th>Poster</th>
+                            <th>Type</th>
                             <th>Added On</th>
                             <th>Actions</th>
                         </tr>
@@ -50,8 +71,12 @@
                     @foreach($movies as $movie)
                         <tr>
                             <td>{{$movie->movie_name}}</td>
-                            <td>{{$movie->imdb_id}}</td>                     
-                            <td>{{$movie->created_at}}</td>
+                            <td>{{$movie->imdb_id}}</td>  
+
+                            <td><img src="{{$movie->poster}}" class="img-responsive img-rounded"
+                   style="max-height: 70px; max-width: 70px;"/></td> 
+                            <td>{{$movie->type}}</td>                  
+                            <td>{{$movie->created_at}}</td>  
                             <td>
                             <form action="{{ url('/movie/'.$movie->id) }}" method="post">                          
                                 {{ csrf_field() }}                                

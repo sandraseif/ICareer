@@ -14,5 +14,5 @@ class Movie extends Model
      *
      * @var array
      */
-    protected $fillable = ['movie_name','imdb_id','rating','user_id'];
+    protected $fillable = ['movie_name','imdb_id','rating','user_id','poster','type'];
 }

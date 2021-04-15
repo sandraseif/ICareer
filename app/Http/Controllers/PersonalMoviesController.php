@@ -55,7 +55,8 @@ class PersonalMoviesController extends Controller
       
         $data            = $request->all();
         $data['user_id'] =   Auth::user()->id;
-        $value = $request->session()->get('key');
+        $movieTitle = $request->session()->get('movieTitle');
+        $type = $request->session()->get('type');
 
         $existedMovie = Movie::where('imdb_id',$data['imdb_id'])->first();
 
@@ -67,7 +68,7 @@ class PersonalMoviesController extends Controller
         }
         
         Session::flash('message', $msg);
-        return redirect('/imdbSearch/'.$value);
+        return redirect('/imdbSearch/'.$movieTitle.'/'.$type);
         // $movies = Movie::orderBy('id', 'DESC')->paginate(10);    
         // return view('profile.favorite_movies')->withMovies($movies)->with('msg',$msg);
     
